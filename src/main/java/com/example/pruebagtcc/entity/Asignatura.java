@@ -27,6 +27,9 @@ public class Asignatura implements Serializable{
     @Column(length = 512)
     private String nombre;
     
+    @Column
+    private Double nota;
+    
     //muchas asignaturas un estudiante
     @ManyToOne
     @JoinColumn(name = "docenteId"/* , updatable = false */)
