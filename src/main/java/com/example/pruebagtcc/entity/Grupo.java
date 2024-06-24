@@ -31,12 +31,9 @@ public class Grupo {
     @JsonIgnoreProperties(value = "grupos")
     private Docente docente;
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-            name="estudiantes_grupos", joinColumns = @JoinColumn(name="grupo_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="estudiante_id", referencedColumnName = "id")
-    )
-    @JsonIgnoreProperties(value="grupos")
+    @ManyToMany(mappedBy = "grupos")
+    @JsonIgnore
+    //@JsonIgnoreProperties(value="ods")
     private List<Estudiante> estudiantes;
 
     public Grupo() {

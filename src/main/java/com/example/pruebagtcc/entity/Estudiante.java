@@ -57,22 +57,24 @@ public class Estudiante {
     @Column(length = 1024)
     private String nombreCompletoAcudiente;
     
-    //muchos estudiantes con un docente
-    @OneToMany(cascade ={CascadeType.ALL}, mappedBy = "docente")
+    //muchos estudiantes con un grupo
+    @OneToMany(cascade ={CascadeType.ALL}, mappedBy = "estudiante")
     @JsonBackReference
-    private List<Estudiante> estudiantes;
+    private List<Asignatura> asignaturas;
     
-    //muchos estudiantes con muchas asignaturas    
-    @ManyToMany(mappedBy = "estudiantes")
-    @JsonIgnore
-    //@JsonIgnoreProperties(value="ods")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name="grado", joinColumns = @JoinColumn(name="estudiante_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="grupo_id", referencedColumnName = "id")
+    )
+    @JsonIgnoreProperties(value="estudiantes")
     private List<Grupo> grupos;
 
     public Estudiante() {
         
     }
 
-    public Estudiante(String tipoDocumento, Long id, String nombres, String apellidos, Date fechaNacimiento, String grado, String ciudadResidencia, String direccionResidencia, String email, Long telefonoFijo, Long celular, String nombreCompletoAcudiente, List<Estudiante> estudiantes, List<Grupo> grupos) {
+    public Estudiante(String tipoDocumento, Long id, String nombres, String apellidos, Date fechaNacimiento, String ciudadResidencia, String direccionResidencia, String email, Long telefonoFijo, Long celular, String nombreCompletoAcudiente, List<Asignatura> asignaturas, List<Grupo> grupos) {
         this.tipoDocumento = tipoDocumento;
         this.id = id;
         this.nombres = nombres;
@@ -84,7 +86,7 @@ public class Estudiante {
         this.telefonoFijo = telefonoFijo;
         this.celular = celular;
         this.nombreCompletoAcudiente = nombreCompletoAcudiente;
-        this.estudiantes = estudiantes;
+        this.asignaturas = asignaturas;
         this.grupos = grupos;
     }
 
@@ -176,12 +178,12 @@ public class Estudiante {
         this.nombreCompletoAcudiente = nombreCompletoAcudiente;
     }
 
-    public List<Estudiante> getEstudiantes() {
-        return estudiantes;
+    public List<Asignatura> getAsignaturas() {
+        return asignaturas;
     }
 
-    public void setEstudiantes(List<Estudiante> estudiantes) {
-        this.estudiantes = estudiantes;
+    public void setAsignaturas(List<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
     }
 
     public List<Grupo> getGrupos() {
@@ -191,6 +193,8 @@ public class Estudiante {
     public void setGrupos(List<Grupo> grupos) {
         this.grupos = grupos;
     }
+
+    
     
     
 }
